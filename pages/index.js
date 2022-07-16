@@ -197,10 +197,16 @@ let datetime = "Last Sync: " + currentdate.getDate() + "/"
     props: {
       coupYearFrequencyArray: coupYearFrequencyArray,
       datetime: datetime,
-    }
+    },
+    revalidate: 1,
   }
 }
 
+/*
+Observation:
+Only getStaticProps() and no revalidate -- display stuck at "Last Sync: 16/7/2022 @ 22:15:1"
+getStaticProps() with revalidate: 1 -- 
+*/
 
   //Set() - creates an array of unique elements only - https://www.w3schools.com/js/js_object_sets.asp
   // .sort() - https://www.w3schools.com/jsref/jsref_sort.asp
