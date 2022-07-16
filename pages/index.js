@@ -60,7 +60,7 @@ import { Bar } from 'react-chartjs-2'
 
 
 
-export default function Home({coupYearFrequencyArray}) {
+export default function Home({coupYearFrequencyArray, datetime}) {
 
   //https://www.chartjs.org/docs/latest/getting-started/integration.html
   //https://www.chartjs.org/docs/latest/charts/bar.html
@@ -127,7 +127,7 @@ export default function Home({coupYearFrequencyArray}) {
 
       <main>
         <h2>Coups in 2022</h2>
-        <p></p>
+        <p>{datetime}</p>
         <Bar data={data} width={50} height={20} options={options}/>
       </main>
     </div>
@@ -184,9 +184,19 @@ export async function getStaticProps() {
     })
   })
 
+let currentdate = new Date(); 
+let datetime = "Last Sync: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+
+  console.log(datetime);
   return {
     props: {
-      coupYearFrequencyArray: coupYearFrequencyArray
+      coupYearFrequencyArray: coupYearFrequencyArray,
+      datetime: datetime,
     }
   }
 }
