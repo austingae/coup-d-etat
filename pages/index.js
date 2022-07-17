@@ -58,10 +58,11 @@ Chart.register(
   SubTitle
 );
 
-import { Bar, getElementsAtEvent } from 'react-chartjs-2'
+import { Bar, Doughnut, getElementsAtEvent } from 'react-chartjs-2'
 
-export default function Home({coupYearFrequencyArray, coupIncidentsArray, date}) {
+export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSuccessRateArray, date}) {
   
+  console.log(typeof(coupSuccessRateArray[0].numberOfSuccessfulCoups));
   const years = [];
   coupYearFrequencyArray.forEach((coupYear) => {
     years.push(coupYear.year);
@@ -95,13 +96,13 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, date})
         const numberOfCoups = context.parsed.y;
         //Colors From OSHA - https://www.creativesafetysupply.com/articles/safety-colors/
         if (numberOfCoups <= 4) {
-          return 'rgba(255, 205, 86, 0.2)'
+          return 'rgba(255, 205, 86, 0.4)'
         }
         else if (numberOfCoups > 4 && numberOfCoups <= 9) {
-          return 'rgba(255, 159, 64, 0.2)'
+          return 'rgba(255, 159, 64, 0.4)'
         }
         else if (numberOfCoups > 9) {
-          return 'rgba(255, 99, 132, 0.2)'
+          return 'rgba(255, 99, 132, 0.4)'
         }
       },
     },
@@ -118,6 +119,29 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, date})
     let coupYear = coupYearsArray[index];
 
     setClickedCoupYear(coupYear);
+  }
+
+
+
+  const coupSuccessRateData = {
+    labels: ['Number of Successful Coups', 'Number of Failed Coups'],
+    datasets: [
+      {
+        data: [coupSuccessRateArray[0].numberOfSuccessfulCoups, coupSuccessRateArray[1].numberOfFailedCoups],
+        backgroundColor: [
+          'rgba(74,143,226,0.4)',
+          'rgba(207,32,27,0.4)',
+        ],
+        borderColor: [
+          'rgb(74,143,226)',
+          'rgb(207,32,27)',
+        ]
+      }
+    ]
+  };
+
+  const doughnutOptions = {
+    responsive: true,
   }
 
   return (
@@ -142,21 +166,13 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, date})
         />
 
         <p>{clickedCoupYear}</p>
-        {
-          coupIncidentsArray.forEach((coupIncidentsEachYear) => {
-            if (clickedCoupYear == coupIncidentsEachYear.year) {
-              (coupIncidentsEachYear.coupIncidents).map((coupIncident) => {
-                return (
-                  <div key={coupIncident.date}>
-                  <h3>{coupIncident.country}</h3>
-                  </div>
-                )
-              })
-          }
-        })
-      }
-      
 
+
+        <h2>You want to attempt a coup d'etat against your government? Check out your odds of success!</h2>
+
+        <div style={{width: '400px', height: '400px'}}>
+          <Doughnut data={coupSuccessRateData} options={doughnutOptions}/>
+        </div>
 
 
 
@@ -243,6 +259,27 @@ export async function getStaticProps() {
   });
 
 
+  //GOAL: An array -- coupSuccessRateArray -- with two elements: one element holds the number of successful coups, and the other lemenet holds the number of failed coups
+  let coupSuccessRateArray = [
+    {
+      numberOfSuccessfulCoups: 0,
+    },
+    {
+      numberOfFailedCoups: 0,
+    }
+  ];
+
+  coupData.forEach((coupDatum) => {
+    if (coupDatum.successful == 1) {
+      coupSuccessRateArray[0].numberOfSuccessfulCoups = coupSuccessRateArray[0].numberOfSuccessfulCoups + 1;
+    }
+    else if (coupDatum.successful == 0) {
+      coupSuccessRateArray[1].numberOfFailedCoups = coupSuccessRateArray[1].numberOfFailedCoups + 1;
+    }
+  });
+
+
+
 
 
 //I needed to get the current date, specifically only month and day, to be displayed in the paragraph under the heading of "Coups in 2022"
@@ -259,6 +296,7 @@ let date = month + " " + day;
     props: {
       coupYearFrequencyArray: coupYearFrequencyArray,
       coupIncidentsArray: coupIncidentsArray,
+      coupSuccessRateArray: coupSuccessRateArray,
       date: date,
     },
     revalidate: 1,
