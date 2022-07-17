@@ -20,7 +20,7 @@ const InterestingFacts = ({mixedData}) => {
 
 export default InterestingFacts
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   let jsonFile = await fetch("https://raw.githubusercontent.com/austingae/coup-d-etat/master/data/interesting-facts-data.json");
   let data = await jsonFile.json();
   let mixedData = data.sort(() => Math.random() - 0.5);
@@ -38,6 +38,6 @@ getStaticProps() fetches the data at build time. If the data has been updated, t
 getServerSideProps() fetches the data at page request. If the data has been updated, then the website page will show it. 
 
 then...
-If I use getStaticProps(), then whenever I do a page request, the data will not mix up.
+If I use getStaticProps(), then whenever I do a page request, the data will not mix up. I AM CORRECT!
 If I use getServerSideProps(), then whenever I do a page request, the data will mix up. 
 */
