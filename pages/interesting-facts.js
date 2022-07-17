@@ -7,12 +7,19 @@ const InterestingFacts = ({mixedData}) => {
     <div>
       <h3>{mixedData[qAndANumber].question}</h3>
       <h3>{mixedData[qAndANumber].answer}</h3>
+      <button 
+        onClick={() => {
+          if (qAndANumber != 0) {
+            setqAndANumber(qAndANumber - 1);
+          }
+        }}>Previous
+      </button>
       <button onClick={() => {
-        setqAndANumber(qAndANumber - 1);
-      }}>Previous</button>
-      <button onClick={() => {
-        setqAndANumber(qAndANumber + 1);
-      }}>Next</button>
+          if (qAndANumber != mixedData.length-1) {
+            setqAndANumber(qAndANumber + 1);
+          }
+        }}>Next
+      </button>
     </div>
   )
 }

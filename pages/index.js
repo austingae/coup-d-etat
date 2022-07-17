@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { useState, useRef } from 'react';
 import styles from '../styles/Home.module.css'
 
@@ -197,6 +198,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
     ]
   }
 
+  //DESIGN: https://martinlea.com/sample-author-platform/ 
   return (
     <div className={styles.container}>
       <Head>
