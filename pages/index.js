@@ -161,8 +161,8 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, date})
 
 
   
-        <h2>What's considered as a military coup?</h2>
-        <p>"Military coups d'etat are illegal and overt attempts by military officers to unseat sitting executives", according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
+        <h2>What&apos;s considered as a military coup?</h2>
+        <p>&quot;Military coups d&apos;etat are illegal and overt attempts by military officers to unseat sitting executives&quot;, according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
       </main>
     </div>
   )
