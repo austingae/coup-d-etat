@@ -184,17 +184,17 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
           coupIncidentsArray.map((coupIncidentsEachYear) => {
             if (clickedCoupYear == coupIncidentsEachYear.year) {
               return (
-                <>
+                <div key={coupIncidentsEachYear.year}>
                 {
                   (coupIncidentsEachYear.coupIncidents).map((coupIncident) => {
                     return (
-                      <div>
+                      <div key={coupIncident.date}>
                         <p>{coupIncident.country}</p>
                       </div>
                     )
                   })
                 }
-                </>
+                </div>
               );
             }
           })
