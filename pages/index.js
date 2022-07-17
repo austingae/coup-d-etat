@@ -61,8 +61,6 @@ Chart.register(
 import { Bar, Doughnut, getElementsAtEvent } from 'react-chartjs-2'
 
 export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSuccessRateArray, date}) {
-  
-  console.log(typeof(coupSuccessRateArray[0].numberOfSuccessfulCoups));
   const years = [];
   coupYearFrequencyArray.forEach((coupYear) => {
     years.push(coupYear.year);
@@ -144,6 +142,9 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
     responsive: true,
   }
 
+
+  const numList = [0,1,2,3,4,5,6,7];
+
   return (
     <div className={styles.container}>
       <Head>
@@ -157,7 +158,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
         <h2>Military Coups in 2022</h2>
         <p>As of {date}, there has been a total of {coupYearFrequencyArray[coupYearFrequencyArray.length-1].frequency} coup.</p>
 
-        {/*Bar Chart of Number of Coups Each Year Since 1950*/}
+        {/*Bar Chart Displaying Number of Coups Each Year Since 1950*/}
         <h2>Number of Military Coups Each Year Since 1950</h2>
         <Bar 
           data={data} 
@@ -168,17 +169,36 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
         <p>{clickedCoupYear}</p>
 
 
-        <h2>You want to attempt a coup d&apos;etat against your government? Check out your odds of success!</h2>
 
+        {/*Doughnut Chart Displaying the Number of Successful Coups and the Number of Failed Coups */}
+        <h2>You want to attempt a coup d&apos;etat against your government? Check out your odds of success!</h2>
         <div style={{width: '400px', height: '400px'}}>
           <Doughnut data={coupSuccessRateData} options={doughnutOptions}/>
         </div>
 
-
-
-  
+        {/*Definition of Military Coup */}
         <h2>What&apos;s considered as a military coup?</h2>
         <p>&quot;Military coups d&apos;etat are illegal and overt attempts by military officers to unseat sitting executives&quot;, according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
+
+        {
+          coupIncidentsArray.map((coupIncidentsEachYear) => {
+            if (clickedCoupYear == coupIncidentsEachYear.year) {
+              return (
+                <>
+                {
+                  (coupIncidentsEachYear.coupIncidents).map((coupIncident) => {
+                    return (
+                      <div>
+                        <p>{coupIncident.country}</p>
+                      </div>
+                    )
+                  })
+                }
+                </>
+              );
+            }
+          })
+        }
       </main>
     </div>
   )
@@ -206,6 +226,7 @@ export async function getStaticProps() {
   Hence, I manually added the year 2007 to the uniqueCoupYearsArray. 
   In the future, if a year has 0 coup, then I must come to the code and manually add that year to the uniqueCoupYearsArray.
   */
+ 
   uniqueCoupYearsArray.push(2007);
   uniqueCoupYearsArray.sort();
 
@@ -257,6 +278,21 @@ export async function getStaticProps() {
       }
     })
   });
+
+  //If a year has 0 coupIncidents, then just add an empty coupIncident object. The only year so far that had 0 coupIncidents was 2007. 
+  coupIncidentsArray.forEach((coup) => {
+    if (coup.coupIncidents.length == 0) {
+      coup.coupIncidents.push({
+        country: "",
+        date: "",
+        successful: "",
+      })
+    }
+  })
+
+  
+
+
 
 
   //GOAL: An array -- coupSuccessRateArray -- with two elements: one element holds the number of successful coups, and the other lemenet holds the number of failed coups
