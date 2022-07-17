@@ -60,7 +60,7 @@ Chart.register(
 
 import { Bar, Doughnut, getElementsAtEvent } from 'react-chartjs-2'
 
-export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSuccessRateArray, date}) {
+export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSuccessRateArray, eachCountryNumberOfCoupArray, date}) {
   const years = [];
   coupYearFrequencyArray.forEach((coupYear) => {
     years.push(coupYear.year);
@@ -79,13 +79,16 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
       borderColor: function(context) {
         const numberOfCoups = context.parsed.y;
         //Colors From OSHA - https://www.creativesafetysupply.com/articles/safety-colors/
-        if (numberOfCoups <= 4) {
+        if (numberOfCoups == 1) {
+          return 'rgba(67,143,247,1)'
+        }
+        else if (numberOfCoups > 1 && numberOfCoups < 5) {
           return 'rgba(255, 205, 86, 1)'
         }
-        else if (numberOfCoups > 4 && numberOfCoups <= 9) {
+        else if (numberOfCoups >= 5 && numberOfCoups<= 8) {
           return 'rgba(255, 159, 64, 1)'
         }
-        else if (numberOfCoups > 9) {
+        else if (numberOfCoups > 8) {
           return 'rgba(255, 99, 132, 1)'
         }
       },
@@ -93,13 +96,16 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
       backgroundColor: function(context) {
         const numberOfCoups = context.parsed.y;
         //Colors From OSHA - https://www.creativesafetysupply.com/articles/safety-colors/
-        if (numberOfCoups <= 4) {
+        if (numberOfCoups == 1) {
+          return 'rgba(67,143,247,0.4)'
+        }
+        else if (numberOfCoups > 1 && numberOfCoups < 5) {
           return 'rgba(255, 205, 86, 0.4)'
         }
-        else if (numberOfCoups > 4 && numberOfCoups <= 9) {
+        else if (numberOfCoups >= 5 && numberOfCoups<= 8) {
           return 'rgba(255, 159, 64, 0.4)'
         }
-        else if (numberOfCoups > 9) {
+        else if (numberOfCoups > 8) {
           return 'rgba(255, 99, 132, 0.4)'
         }
       },
@@ -108,7 +114,6 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
 
   const [clickedCoupYear, setClickedCoupYear] = useState(null);
   const chartRef = useRef(null);
-
   const onClick = (event) => {
     const index = getElementsAtEvent(chartRef.current, event)[0].index; //this gives the index. first bar's index = 0. second bar's index = 1
 
@@ -143,7 +148,54 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
   }
 
 
-  const numList = [0,1,2,3,4,5,6,7];
+  const countries = [];
+  eachCountryNumberOfCoupArray.forEach((country) => {
+    countries.push(country.country);
+  })
+
+  const eachCountryNumberOfCoups = [];
+  eachCountryNumberOfCoupArray.forEach((country) => {
+    eachCountryNumberOfCoups.push(country.numberOfCoups);
+  })
+
+  const eachCountryNumberOfCoupsData = {
+    labels: countries,
+    datasets: [
+      {
+        label: 'Number of Coups',
+        data: eachCountryNumberOfCoups,
+        backgroundColor: function(context) {
+          if (context.raw == 1) {
+            return 'rgba(67,143,247,0.4)'
+          }
+          else if (context.raw > 1 && context.raw < 5) {
+            return 'rgba(255, 205, 86, 0.4)'
+          }
+          else if (context.raw >= 5 && context.raw <= 8) {
+            return 'rgba(255, 159, 64, 0.4)'
+          }
+          else if (context.raw > 8) {
+            return 'rgba(255, 99, 132, 0.4)'
+          }
+        },
+        borderColor: function(context) {
+          if (context.raw == 1) {
+            return 'rgba(67,143,247,1)'
+          }
+          else if (context.raw > 1 && context.raw < 5) {
+            return 'rgba(255, 205, 86, 1)'
+          }
+          else if (context.raw >= 5 && context.raw <= 8) {
+            return 'rgba(255, 159, 64, 1)'
+          }
+          else if (context.raw > 8) {
+            return 'rgba(255, 99, 132, 1)'
+          }
+        },
+        borderWidth: 1,
+      }
+    ]
+  }
 
   return (
     <div className={styles.container}>
@@ -154,51 +206,65 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
       </Head>
 
       <main>
-        {/*Coup in 2022*/}
-        <h2>Military Coups in 2022</h2>
-        <p>As of {date}, there has been a total of {coupYearFrequencyArray[coupYearFrequencyArray.length-1].frequency} coup.</p>
+        <section>
+          {/*Coup in 2022*/}
+          <h2>Military Coups in 2022</h2>
+          <p>As of {date}, there has been a total of {coupYearFrequencyArray[coupYearFrequencyArray.length-1].frequency} coup.</p>
+        </section>
 
-        {/*Bar Chart Displaying Number of Coups Each Year Since 1950*/}
-        <h2>Number of Military Coups Each Year Since 1950</h2>
-        <Bar 
-          data={data} 
-          ref={chartRef}
-          onClick={onClick}
-        />
+        <section>
+          {/*Bar Chart Displaying Number of Coups Each Year Since 1950*/}
+          <h2>Number of Military Coups Each Year Since 1950</h2>
+          <Bar 
+            data={data} 
+            ref={chartRef}
+            onClick={onClick}
+          />
+        </section>
 
-        <p>{clickedCoupYear}</p>
 
+        {/*Information of the Coup if a Bar in the Bar Graph is Clicked */}
+        <section>
+          <h2>In the year of {clickedCoupYear}, there were coups in the following countries: </h2>
+          {
+            coupIncidentsArray.map((coupIncidentsEachYear) => {
+              if (clickedCoupYear == coupIncidentsEachYear.year) {
+                return (
+                  <div key={coupIncidentsEachYear.year}>
+                  {
+                    (coupIncidentsEachYear.coupIncidents).map((coupIncident) => {
+                      return (
+                        <div key={coupIncident.date}>
+                          <h3>{coupIncident.country}</h3>
+                          <p>In the country of {coupIncident.country}, a military coup occurred on {coupIncident.date}. It was {coupIncident.successful == 1 ? 'successful' : 'a failure'}.</p>
+                        </div>
+                      )
+                    })
+                  }
+                  </div>
+                );
+              }
+            })
+          }
+        </section>
 
+        <section>
+          {/*Doughnut Chart Displaying the Number of Successful Coups and the Number of Failed Coups */}
+          <h2>You want to attempt a coup d&apos;etat against your government? Check out your odds of success!</h2>
+          <div style={{width: '400px', height: '400px'}}>
+            <Doughnut data={coupSuccessRateData} options={doughnutOptions}/>
+          </div>
+        </section>
 
-        {/*Doughnut Chart Displaying the Number of Successful Coups and the Number of Failed Coups */}
-        <h2>You want to attempt a coup d&apos;etat against your government? Check out your odds of success!</h2>
-        <div style={{width: '400px', height: '400px'}}>
-          <Doughnut data={coupSuccessRateData} options={doughnutOptions}/>
-        </div>
+        <section>
+          <Bar data={eachCountryNumberOfCoupsData} />
+        </section>
 
-        {/*Definition of Military Coup */}
-        <h2>What&apos;s considered as a military coup?</h2>
-        <p>&quot;Military coups d&apos;etat are illegal and overt attempts by military officers to unseat sitting executives&quot;, according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
-
-        {
-          coupIncidentsArray.map((coupIncidentsEachYear) => {
-            if (clickedCoupYear == coupIncidentsEachYear.year) {
-              return (
-                <div key={coupIncidentsEachYear.year}>
-                {
-                  (coupIncidentsEachYear.coupIncidents).map((coupIncident) => {
-                    return (
-                      <div key={coupIncident.date}>
-                        <p>{coupIncident.country}</p>
-                      </div>
-                    )
-                  })
-                }
-                </div>
-              );
-            }
-          })
-        }
+        <section>
+          {/*Definition of Military Coup */}
+          <h2>What&apos;s considered as a military coup?</h2>
+          <p>&quot;Military coups d&apos;etat are illegal and overt attempts by military officers to unseat sitting executives&quot;, according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
+        </section>
       </main>
     </div>
   )
@@ -283,9 +349,9 @@ export async function getStaticProps() {
   coupIncidentsArray.forEach((coup) => {
     if (coup.coupIncidents.length == 0) {
       coup.coupIncidents.push({
-        country: "",
-        date: "",
-        successful: "",
+        country: "N/A",
+        date: "N/A",
+        successful: "N/A",
       })
     }
   })
@@ -314,7 +380,31 @@ export async function getStaticProps() {
     }
   });
 
+  //GOAL: An array -- eachCountryNumberOfCoupArray -- that has each element holding a country and how many total coups occurred in that country.
+  let countriesThatExperiencedCoupsWithDuplicatesArray = [];
+  coupData.forEach((coupDatum) => {
+    countriesThatExperiencedCoupsWithDuplicatesArray.push(coupDatum.country);
+  })
 
+  let countriesThatExperiencedCoupsWithoutDuplicatesArray = [...new Set(countriesThatExperiencedCoupsWithDuplicatesArray)];
+
+  let eachCountryNumberOfCoupArray = [];
+  countriesThatExperiencedCoupsWithoutDuplicatesArray.forEach((country) => {
+    eachCountryNumberOfCoupArray.push(
+      {
+        country: country,
+        numberOfCoups: 0
+      }
+    )
+  });
+
+  countriesThatExperiencedCoupsWithDuplicatesArray.forEach((country) => {
+    eachCountryNumberOfCoupArray.forEach((uniqueCountry) => {
+      if (country == uniqueCountry.country) {
+        uniqueCountry.numberOfCoups = uniqueCountry.numberOfCoups + 1;
+      }
+    })
+  })
 
 
 
@@ -333,6 +423,7 @@ let date = month + " " + day;
       coupYearFrequencyArray: coupYearFrequencyArray,
       coupIncidentsArray: coupIncidentsArray,
       coupSuccessRateArray: coupSuccessRateArray,
+      eachCountryNumberOfCoupArray: eachCountryNumberOfCoupArray,
       date: date,
     },
     revalidate: 1,
@@ -342,7 +433,7 @@ let date = month + " " + day;
 /*
 Observation:
 Only getStaticProps() and no revalidate -- display stuck at "Last Sync: 16/7/2022 @ 22:15:1"
-getStaticProps() with revalidate: 1 -- 
+getStaticProps() with revalidate: 1 -- display updates to current date and time 
 */
 
   //https://towardsdev.com/chart-js-next-js-beautiful-data-driven-dashboards-how-to-create-them-fast-and-efficiently-a59e313a3153
