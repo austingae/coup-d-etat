@@ -168,7 +168,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
         <p>{clickedCoupYear}</p>
 
 
-        <h2>You want to attempt a coup d'etat against your government? Check out your odds of success!</h2>
+        <h2>You want to attempt a coup d&apos;etat against your government? Check out your odds of success!</h2>
 
         <div style={{width: '400px', height: '400px'}}>
           <Doughnut data={coupSuccessRateData} options={doughnutOptions}/>
