@@ -1,5 +1,7 @@
 import Head from 'next/head'
+import { useState, useRef } from 'react';
 import styles from '../styles/Home.module.css'
+
 
 import {
   Chart,
@@ -56,16 +58,10 @@ Chart.register(
   SubTitle
 );
 
-import { Bar } from 'react-chartjs-2'
+import { Bar, getElementsAtEvent } from 'react-chartjs-2'
 
-
-
-export default function Home({coupYearFrequencyArray, datetime}) {
-
-  //https://www.chartjs.org/docs/latest/getting-started/integration.html
-  //https://www.chartjs.org/docs/latest/charts/bar.html
-  //
-
+export default function Home({coupYearFrequencyArray, coupIncidentsArray, date}) {
+  
   const years = [];
   coupYearFrequencyArray.forEach((coupYear) => {
     years.push(coupYear.year);
@@ -111,10 +107,17 @@ export default function Home({coupYearFrequencyArray, datetime}) {
     },
     ]};
 
-  const options = {
-    onClick: function(context) {
+  const [clickedCoupYear, setClickedCoupYear] = useState(null);
+  const chartRef = useRef(null);
 
-    }
+  const onClick = (event) => {
+    const index = getElementsAtEvent(chartRef.current, event)[0].index; //this gives the index. first bar's index = 0. second bar's index = 1
+
+    const coupYearsArray = chartRef.current.data.labels;
+
+    let coupYear = coupYearsArray[index];
+
+    setClickedCoupYear(coupYear);
   }
 
   return (
@@ -126,12 +129,42 @@ export default function Home({coupYearFrequencyArray, datetime}) {
       </Head>
 
       <main>
-        <h2>Coups in 2022</h2>
-        <p>{datetime}</p>
-        <Bar data={data} width={50} height={20} options={options}/>
+        {/*Coup in 2022*/}
+        <h2>Military Coups in 2022</h2>
+        <p>As of {date}, there has been a total of {coupYearFrequencyArray[coupYearFrequencyArray.length-1].frequency} coup.</p>
+
+        {/*Bar Chart of Number of Coups Each Year Since 1950*/}
+        <h2>Number of Military Coups Each Year Since 1950</h2>
+        <Bar 
+          data={data} 
+          ref={chartRef}
+          onClick={onClick}
+        />
+
+        <p>{clickedCoupYear}</p>
+        {
+          coupIncidentsArray.forEach((coupIncidentsEachYear) => {
+            if (clickedCoupYear == coupIncidentsEachYear.year) {
+              (coupIncidentsEachYear.coupIncidents).map((coupIncident) => {
+                return (
+                  <div key={coupIncident.date}>
+                  <h3>{coupIncident.country}</h3>
+                  </div>
+                )
+              })
+          }
+        })
+      }
+      
+
+
+
+
+  
+        <h2>What's considered as a military coup?</h2>
+        <p>"Military coups d'etat are illegal and overt attempts by military officers to unseat sitting executives", according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
       </main>
     </div>
-    
   )
 }
 
@@ -141,7 +174,7 @@ export async function getStaticProps() {
   let coupData = await jsonFile.json();
 
 
-
+  //GOAL: GET THE NUMBER OF COUPS THAT OCCURRED EACH YEAR SINCE 1950 in an array, named coupYearFrequencyArray
   //coupYearArray = an array of the coup years. Display: [1952, 1957, 150, 1956, 1957, 1957, 1957, 1958, 1970, 1986, and so on]
   let coupYearArray = [];
   coupData.forEach((coup) => {
@@ -184,19 +217,49 @@ export async function getStaticProps() {
     })
   })
 
-let currentdate = new Date(); 
-let datetime = "Last Sync: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
 
-  console.log(datetime);
+  //GOAL: Get the coups' information (country, date, and whether the coup was successful) for each year since 1950 in an array, named coupIncidentsArray
+  let coupIncidentsArray = [];
+
+  uniqueCoupYearsArray.forEach((coupYear) => {
+    coupIncidentsArray.push(
+      {
+        year: coupYear,
+        coupIncidents: []
+      }
+    )
+  });
+
+  coupIncidentsArray.forEach((coup) => {
+    coupData.forEach((coupDatum) => {
+      if (coup.year == coupDatum.year) {
+        coup.coupIncidents.push({
+          country: coupDatum.country,
+          date: coupDatum.date,
+          successful: coupDatum.successful,
+        })
+      }
+    })
+  });
+
+
+
+
+//I needed to get the current date, specifically only month and day, to be displayed in the paragraph under the heading of "Coups in 2022"
+let currentDate = new Date();
+
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+let month = monthNames[currentDate.getMonth()];
+let day = currentDate.getDate();
+
+let date = month + " " + day;
   return {
     props: {
       coupYearFrequencyArray: coupYearFrequencyArray,
-      datetime: datetime,
+      coupIncidentsArray: coupIncidentsArray,
+      date: date,
     },
     revalidate: 1,
   }
@@ -208,6 +271,12 @@ Only getStaticProps() and no revalidate -- display stuck at "Last Sync: 16/7/202
 getStaticProps() with revalidate: 1 -- 
 */
 
+  //https://towardsdev.com/chart-js-next-js-beautiful-data-driven-dashboards-how-to-create-them-fast-and-efficiently-a59e313a3153
   //Set() - creates an array of unique elements only - https://www.w3schools.com/js/js_object_sets.asp
   // .sort() - https://www.w3schools.com/jsref/jsref_sort.asp
   //what does '...' mean? - https://www.quora.com/What-does-the-mean-in-Javascript
+
+
+
+    //https://www.chartjs.org/docs/latest/getting-started/integration.html
+  //https://www.chartjs.org/docs/latest/charts/bar.html
