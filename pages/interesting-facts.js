@@ -1,19 +1,18 @@
 import React from 'react'
+import { useState } from 'react'
 
 const InterestingFacts = ({mixedData}) => {
-  console.log(mixedData);
+  let [qAndANumber, setqAndANumber] = useState(0);
   return (
     <div>
-      {
-        mixedData.map((datum) => {
-          return (
-            <div key={datum.question}>
-              <p>{datum.question}</p>
-              <p>{datum.answer}</p>
-            </div>
-          )
-        })
-      }
+      <h3>{mixedData[qAndANumber].question}</h3>
+      <h3>{mixedData[qAndANumber].answer}</h3>
+      <button onClick={() => {
+        setqAndANumber(qAndANumber - 1);
+      }}>Previous</button>
+      <button onClick={() => {
+        setqAndANumber(qAndANumber + 1);
+      }}>Next</button>
     </div>
   )
 }
@@ -39,5 +38,7 @@ getServerSideProps() fetches the data at page request. If the data has been upda
 
 then...
 If I use getStaticProps(), then whenever I do a page request, the data will not mix up. I AM CORRECT!
-If I use getServerSideProps(), then whenever I do a page request, the data will mix up. 
+If I use getServerSideProps(), then whenever I do a page request, the data will mix up. I AM CORRECT!
+
+I AM SMART!!!
 */
