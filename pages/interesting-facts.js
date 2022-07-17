@@ -7,7 +7,7 @@ const InterestingFacts = ({mixedData}) => {
       {
         mixedData.map((datum) => {
           return (
-            <div>
+            <div key={datum.question}>
               <p>{datum.question}</p>
               <p>{datum.answer}</p>
             </div>
