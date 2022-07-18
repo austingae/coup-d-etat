@@ -1,0 +1,87 @@
+.header {
+  font-weight: 500;
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+
+.numCoupContainer {
+  width: auto;
+  padding: 2.5rem 1rem 1rem 1rem;
+  background-color: rgb(2, 11, 1);
+  color: rgb(232, 232, 232);
+}
+
+.coupInfoContainer {
+  width: 100%;
+}
+.coupInfoContainer .coupInfo__header {
+  color: white;
+  background-color: rgb(33, 116, 131);
+  width: auto;
+  padding: 2.5rem 1rem 1rem 1rem;
+  margin-bottom: 0rem;
+}
+.coupInfoContainer .coupInfo__list {
+  width: auto;
+  padding: 1rem 1rem 1rem 1rem;
+  color: white;
+  background-color: rgba(33, 116, 131, 0.8);
+}
+.coupInfoContainer .coupIncident__title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+.coupInfoContainer .coupIncident__description {
+  font-size: 14px;
+  line-height: 1.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.coupSuccessRateContainer {
+  width: auto;
+  padding: 2.5rem 1rem 2.5rem 1rem;
+}
+.coupSuccessRateContainer .coupSuccessRate__header {
+  margin-bottom: 1rem;
+}
+
+.eachCountryNumOfCoupsContainer {
+  width: auto;
+  padding: 2.5rem 1rem 2.5rem 1rem;
+  color: white;
+  background-color: rgb(2, 11, 1);
+}
+
+.militaryCoupContainer {
+  width: auto;
+  padding: 2.5rem 1rem 2.5rem 1rem;
+}
+.militaryCoupContainer .militaryCoup__header {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 0.7rem;
+}
+.militaryCoupContainer .militaryCoup__definition {
+  font-size: 14px;
+}
+
+.learnMoreContainer {
+  width: auto;
+  padding: 2.5rem 1rem 2.5rem 1rem;
+  text-align: center;
+  color: white;
+  background-color: rgb(33, 116, 131);
+}
+.learnMoreContainer .learnMore__button {
+  color: black;
+  background-color: white;
+  font-size: 14px;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-style: solid;
+  border-color: white;
+  border-radius: 1rem;
+}
+.learnMoreContainer .learnMore__button:hover {
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}/*# sourceMappingURL=home.module.css.map */

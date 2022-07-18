@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useState, useRef } from 'react';
-import styles from '../styles/Home.module.css'
+import styles from '../styles/home/home.module.css'
 
 
 import {
@@ -113,6 +113,28 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
     },
     ]};
 
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          ticks: {
+            color: 'rgb(232,232,232)',
+          }
+        },
+        y: {
+          ticks: {
+            color: 'rgb(232,232,232)',
+          }
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        }
+      }
+    }
+
+
   const [clickedCoupYear, setClickedCoupYear] = useState(null);
   const chartRef = useRef(null);
   const onClick = (event) => {
@@ -146,6 +168,14 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
 
   const doughnutOptions = {
     responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          color: 'rgb(2,11,1)',
+        }
+      }
+    }
   }
 
 
@@ -198,6 +228,26 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
     ]
   }
 
+  const eachCountryNumberOfCoupsOptions = {
+    plugins: {
+      legend: {
+        display: false,
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: 'rgb(232,232,232)',
+        }
+      },
+      y: {
+        ticks: {
+          color: 'rgb(232,232,232)',
+        }
+      }
+    }
+  }
+
   //DESIGN: https://martinlea.com/sample-author-platform/ 
   return (
     <div className={styles.container}>
@@ -208,64 +258,66 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
       </Head>
 
       <main>
-        <section>
-          {/*Coup in 2022*/}
-          <h2>Military Coups in 2022</h2>
-          <p>As of {date}, there has been a total of {coupYearFrequencyArray[coupYearFrequencyArray.length-1].frequency} coup.</p>
-        </section>
-
-        <section>
+        <section className={styles.numCoupContainer}>
           {/*Bar Chart Displaying Number of Coups Each Year Since 1950*/}
-          <h2>Number of Military Coups Each Year Since 1950</h2>
+          <h2 className={styles.header}>Number of Military Coups Each Year Since 1950</h2>
           <Bar 
             data={data} 
             ref={chartRef}
             onClick={onClick}
+            options={options}
           />
         </section>
 
-
         {/*Information of the Coup if a Bar in the Bar Graph is Clicked */}
-        <section>
-          <h2>In the year of {clickedCoupYear}, there were coups in the following countries: </h2>
-          {
-            coupIncidentsArray.map((coupIncidentsEachYear) => {
-              if (clickedCoupYear == coupIncidentsEachYear.year) {
-                return (
-                  <div key={coupIncidentsEachYear.year}>
-                  {
-                    (coupIncidentsEachYear.coupIncidents).map((coupIncident) => {
-                      return (
-                        <div key={coupIncident.date}>
-                          <h3>{coupIncident.country}</h3>
-                          <p>In the country of {coupIncident.country}, a military coup occurred on {coupIncident.date}. It was {coupIncident.successful == 1 ? 'successful' : 'a failure'}.</p>
-                        </div>
-                      )
-                    })
-                  }
-                  </div>
-                );
-              }
-            })
-          }
+        <section className={styles.coupInfoContainer}>
+          <h2 className={`${styles.header} ${styles.coupInfo__header}`}>In the year of {clickedCoupYear}, there were military coups in the following countries: </h2>
+          <div className={styles.coupInfo__list}>
+            {
+              coupIncidentsArray.map((coupIncidentsEachYear) => {
+                if (clickedCoupYear == coupIncidentsEachYear.year) {
+                  return (
+                    <div key={coupIncidentsEachYear.year}>
+                    {
+                      (coupIncidentsEachYear.coupIncidents).map((coupIncident) => {
+                        return (
+                          <div key={coupIncident.date}>
+                            <h3 className={styles.coupIncident__title}>{coupIncident.country}</h3>
+                            <p className={styles.coupIncident__description}>In the country of {coupIncident.country}, a military coup occurred on {coupIncident.date}. It was {coupIncident.successful == 1 ? 'successful' : 'a failure'}.</p>
+                          </div>
+                        )
+                      })
+                    }
+                    </div>
+                  );
+                }
+              })
+            }
+          </div>
         </section>
 
-        <section>
+        <section className={styles.coupSuccessRateContainer}>
           {/*Doughnut Chart Displaying the Number of Successful Coups and the Number of Failed Coups */}
-          <h2>You want to attempt a coup d&apos;etat against your government? Check out your odds of success!</h2>
-          <div style={{width: '400px', height: '400px'}}>
+          <h2 className={`${styles.header} ${styles.coupSuccessRate__header}`}>You want to attempt a coup d&apos;etat against your government? Check out your odds of success!</h2>
+          <div>
             <Doughnut data={coupSuccessRateData} options={doughnutOptions}/>
           </div>
         </section>
 
-        <section>
-          <Bar data={eachCountryNumberOfCoupsData} />
+        <section className={styles.eachCountryNumOfCoupsContainer}>
+          <h2 className={styles.header}>Number of Coups Each Country Faced</h2>
+          <Bar data={eachCountryNumberOfCoupsData} options={eachCountryNumberOfCoupsOptions}/>
         </section>
 
-        <section>
-          {/*Definition of Military Coup */}
-          <h2>What&apos;s considered as a military coup?</h2>
-          <p>&quot;Military coups d&apos;etat are illegal and overt attempts by military officers to unseat sitting executives&quot;, according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
+        {/*Definition of Military Coup */}
+        <section className={styles.militaryCoupContainer}>
+          <h2 className={styles.militaryCoup__header}>What&apos;s considered as a military coup?</h2>
+          <p className={styles.militaryCoup__definition}>&quot;Military coups d&apos;etat are illegal and overt attempts by military officers to unseat sitting executives&quot;, according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
+        </section>
+
+        <section className={styles.learnMoreContainer}>
+          <h2 className={styles.header}>Want to Learn More About Coups?</h2>
+          <button className={styles.learnMore__button}>Click Here</button>
         </section>
       </main>
     </div>

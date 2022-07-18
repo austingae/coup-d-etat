@@ -10,7 +10,7 @@
 
 .nav-bar {
   width: auto;
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 1rem 1rem 1.5rem 1rem;
 
   display: flex;
   flex-direction: row;
@@ -18,7 +18,7 @@
 }
 
 .nav-bar__website-title {
-  color: var(--dark-red-color);
+  color: rgb(33, 116, 131);
 }
 
 .nav-bar__right-section {
