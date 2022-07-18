@@ -1,26 +1,35 @@
 .header {
   font-weight: 500;
   font-size: 18px;
-  margin-bottom: 1.0rem;
+  padding: 2.5rem 1rem 1rem 1rem;
 }
 
-.numCoupContainer {
-  width: auto;
+.largeHeader {
+  font-size: 24px;
+  font-weight: 500;
+
   padding: 2.5rem 1rem 1rem 1rem;
+}
+
+//Good.
+.numCoupContainer {
+  width: 100%;
   background-color: rgb(2,11,1);
   color: rgb(232,232,232);
+
+  .numCoup__barContainer {
+    padding: 0rem 1rem 0rem 1rem;
+  }
 }
 
+
+//Good.
 .coupInfoContainer {
   width: 100%;
 
   .coupInfo__header {
     color: white;
     background-color: rgb(33, 116, 131);
-
-    width: auto;
-    padding: 2.5rem 1rem 1rem 1rem;
-    margin-bottom: 0rem;
   }
 
   .coupInfo__list {
@@ -44,46 +53,78 @@
   }
 }
 
-.coupSuccessRateContainer {
-  width: auto;
-  padding: 2.5rem 1rem 2.5rem 1rem;
 
-  .coupSuccessRate__header {
-    margin-bottom: 1rem;
+//Good.
+.coupSuccessRateContainer {
+  width: 100%;
+  text-align: center;
+
+  padding-bottom: 3rem;
+
+  .coupSuccessRate__doughnutContainer {
+    width: min(60%, 600px);
+    margin: 0rem auto 0rem auto;
   }
 }
 
+
+//Good.
 .eachCountryNumOfCoupsContainer {
-  width: auto;
-  padding: 2.5rem 1rem 2.5rem 1rem;
+  width: 100%;
   color: white;
   background-color: rgb(2,11,1);
+
+  .eachCountryNumOfCoups__header {
+    padding: 3rem 1rem 1rem 1rem;
+  }
+
+  .eachCountryNumOfCoups__barContainer {
+    padding: 0rem 1rem 0rem 1rem;
+  }
 }
 
 .militaryCoupContainer {
-  width: auto;
-  padding: 2.5rem 1rem 2.5rem 1rem;
-
-  .militaryCoup__header {
-    font-size: 24px;
-    font-weight: 500;
-
-    margin-bottom: 0.7rem;
-  }
+  width: min(100%, 768px);
 
   .militaryCoup__definition {
     font-size: 14px;
+    padding: 0rem 1rem 0rem 1rem;
   }
 }
 
+.summaryContainer {
+  width: min(100%, 768px);
+
+  padding-bottom: 2rem;
+
+  .summaryHeader {
+    font-weight: 500;
+    font-size: 18px;
+    padding: 1rem 1rem 0.3rem 1rem;
+  }
+  .summaryAnswer {
+    width: auto;
+    padding: 0rem 1rem 0rem 1rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .militaryCoupAndSummaryContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+
+
 .learnMoreContainer {
-  width: auto;
-  padding: 2.5rem 1rem 2.5rem 1rem;
-  
+  width: 100%;
   text-align: center;
 
   color: white;
   background-color: rgb(33, 116, 131);
+
+  padding-bottom: 4rem;
 
   .learnMore__button {
     color: black;

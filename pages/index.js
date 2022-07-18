@@ -261,12 +261,14 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
         <section className={styles.numCoupContainer}>
           {/*Bar Chart Displaying Number of Coups Each Year Since 1950*/}
           <h2 className={styles.header}>Number of Military Coups Each Year Since 1950</h2>
-          <Bar 
-            data={data} 
-            ref={chartRef}
-            onClick={onClick}
-            options={options}
-          />
+          <div className={styles.numCoup__barContainer}>
+            <Bar 
+              data={data} 
+              ref={chartRef}
+              onClick={onClick}
+              options={options}
+            />
+          </div>
         </section>
 
         {/*Information of the Coup if a Bar in the Bar Graph is Clicked */}
@@ -299,20 +301,42 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
         <section className={styles.coupSuccessRateContainer}>
           {/*Doughnut Chart Displaying the Number of Successful Coups and the Number of Failed Coups */}
           <h2 className={`${styles.header} ${styles.coupSuccessRate__header}`}>You want to attempt a coup d&apos;etat against your government? Check out your odds of success!</h2>
-          <div>
+          <div className={styles.coupSuccessRate__doughnutContainer}>
             <Doughnut data={coupSuccessRateData} options={doughnutOptions}/>
           </div>
         </section>
 
         <section className={styles.eachCountryNumOfCoupsContainer}>
-          <h2 className={styles.header}>Number of Coups Each Country Faced</h2>
-          <Bar data={eachCountryNumberOfCoupsData} options={eachCountryNumberOfCoupsOptions}/>
+          <h2 className={`${styles.header} ${styles.eachCountryNumOfCoups__header}`}>Number of Coups Each Country Faced</h2>
+          <div className={styles.eachCountryNumOfCoups__barContainer}>
+            <Bar data={eachCountryNumberOfCoupsData} options={eachCountryNumberOfCoupsOptions}/>
+          </div>
         </section>
 
-        {/*Definition of Military Coup */}
-        <section className={styles.militaryCoupContainer}>
-          <h2 className={styles.militaryCoup__header}>What&apos;s considered as a military coup?</h2>
-          <p className={styles.militaryCoup__definition}>&quot;Military coups d&apos;etat are illegal and overt attempts by military officers to unseat sitting executives&quot;, according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
+        <section className={styles.militaryCoupAndSummaryContainer}>
+          {/*Definition of Military Coup */}
+          <section className={styles.militaryCoupContainer}>
+            <h2 className={styles.largeHeader}>What&apos;s considered as a military coup?</h2>
+            <p className={styles.militaryCoup__definition}>&quot;Military coups d&apos;etat are illegal and overt attempts by military officers to unseat sitting executives&quot;, according to the <a href='https://militarycoups.org/' target='_blank' rel='noopener noreferrer' style={{textDecoration: 'underline'}}>Coup Agency and Mechanisms</a> (the creator of the military coup database).</p>
+          </section>
+
+          <section className={styles.summaryContainer}>
+            <h2 className={styles.largeHeader}>Summary:</h2>
+            <div>
+              <h2 className={styles.summaryHeader}>Year With The Most Coups:</h2>
+              <p className={styles.summaryAnswer}>1966</p>
+            </div>
+
+            <div>
+              <h2 className={styles.summaryHeader}>Country With The Most Coups:</h2>
+              <p className={styles.summaryAnswer}>Bolivia</p>
+            </div>
+
+            <div>
+              <h2 className={styles.summaryHeader}>Military Coup Success Rate: </h2>
+              <p className={styles.summaryAnswer}>48.5%</p>
+            </div>
+          </section>
         </section>
 
         <section className={styles.learnMoreContainer}>
