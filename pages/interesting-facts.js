@@ -1,7 +1,11 @@
+//ReactJS
 import React from 'react'
 import { useState } from 'react'
 
+//CSS
 import styles from '../styles/interesting-facts/interesting-facts.module.css'
+
+
 
 const InterestingFacts = ({mixedData}) => {
   //The index of the mixedData. If the "Next" button clicked, then this state increases by one. If the "Previous" button clicked, then this state decreases by one. 

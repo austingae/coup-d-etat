@@ -1,9 +1,15 @@
+//ReactJS 
+import React from 'react'
+import { useState, useRef } from 'react'
+
+//Next.js 
 import Head from 'next/head'
 import Link from 'next/link'
-import { useState, useRef } from 'react';
+
+//CSS
 import styles from '../styles/home/home.module.css'
 
-
+//ChartJS
 import {
   Chart,
   ArcElement,
@@ -30,7 +36,7 @@ import {
   Title,
   Tooltip,
   SubTitle
-} from 'chart.js';
+} from 'chart.js'
 
 Chart.register(
   ArcElement,
@@ -57,11 +63,15 @@ Chart.register(
   Title,
   Tooltip,
   SubTitle
-);
+)
 
 import { Bar, Doughnut, getElementsAtEvent } from 'react-chartjs-2'
 
-export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSuccessRateArray, eachCountryNumberOfCoupArray, date}) {
+
+
+export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSuccessRateArray, eachCountryNumberOfCoupArray}) {
+
+  //BAR GRAPH (X-Axis: Years from 1950 to 2022. Y-Axis: Number of Coups)
   const years = [];
   coupYearFrequencyArray.forEach((coupYear) => {
     years.push(coupYear.year);
@@ -134,7 +144,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
       }
     }
 
-
+  //Purpose: If a bar is clicked, then retrieve the x-axis label below the bar and put the x-axis label into clickedCoupYear.
   const [clickedCoupYear, setClickedCoupYear] = useState(null);
   const chartRef = useRef(null);
   const onClick = (event) => {
@@ -147,8 +157,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
     setClickedCoupYear(coupYear);
   }
 
-
-
+  //DOUGHNUT CHART: (Two Labels: Number of Successful Coup sand Number of Failed Coups)
   const coupSuccessRateData = {
     labels: ['Number of Successful Coups', 'Number of Failed Coups'],
     datasets: [
@@ -178,7 +187,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
     }
   }
 
-
+  //BAR GRAPH (X-Axis: list of countries. Y-Axis: number of coups)
   const countries = [];
   eachCountryNumberOfCoupArray.forEach((country) => {
     countries.push(country.country);
@@ -248,7 +257,8 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
     }
   }
 
-  //DESIGN: https://martinlea.com/sample-author-platform/ 
+
+  //Displaying Stuff on the Home Page
   return (
     <div className={styles.container}>
       <Head>
@@ -258,8 +268,8 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
       </Head>
 
       <main>
+        {/*BAR GRAPH (x-axis: years from 1950 to 2022. y-axis: number of coups)*/}
         <section className={styles.numCoupContainer}>
-          {/*Bar Chart Displaying Number of Coups Each Year Since 1950*/}
           <h2 className={styles.header}>Number of Military Coups Each Year Since 1950</h2>
           <div className={styles.numCoup__barContainer}>
             <Bar 
@@ -271,7 +281,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
           </div>
         </section>
 
-        {/*Information of the Coup if a Bar in the Bar Graph is Clicked */}
+        {/*If one of the bars in the bar graph is clicked, then this section will display information in this format: In the country of [country], a military coup occurred on [military coup date]. It was a [military coup success or failure].*/}
         <section className={styles.coupInfoContainer}>
           <h2 className={`${styles.header} ${styles.coupInfo__header}`}>In the year of {clickedCoupYear}, there were military coups in the following countries: </h2>
           <div className={styles.coupInfo__list}>
@@ -298,6 +308,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
           </div>
         </section>
 
+        {/*DOUGHNUT CHART (labels: number of successful coups, and number of failed coups)*/}
         <section className={styles.coupSuccessRateContainer}>
           {/*Doughnut Chart Displaying the Number of Successful Coups and the Number of Failed Coups */}
           <h2 className={`${styles.header} ${styles.coupSuccessRate__header}`}>You want to attempt a coup d&apos;etat against your government? Check out your odds of success!</h2>
@@ -306,6 +317,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
           </div>
         </section>
 
+        {/*BAR GRAPH (x-axis: list of countries that experienced at least one military coup. y-axis: number of coups*/}
         <section className={styles.eachCountryNumOfCoupsContainer}>
           <h2 className={`${styles.header} ${styles.eachCountryNumOfCoups__header}`}>Number of Coups Each Country Faced</h2>
           <div className={styles.eachCountryNumOfCoups__barContainer}>
@@ -313,6 +325,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
           </div>
         </section>
 
+        {/*A section that explains what is a military coup along with a summary of 1) year with the most coups 2) country with the most coups 3) military coup success rate */}
         <section className={styles.militaryCoupAndSummaryContainer}>
           {/*Definition of Military Coup */}
           <section className={styles.militaryCoupContainer}>
@@ -339,6 +352,7 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
           </section>
         </section>
 
+        {/*A section with a click here button to navigate to the Interesting Facts page */}
         <section className={styles.learnMoreContainer}>
           <h2 className={styles.header}>Want to Learn More About Coups?</h2>
           <Link href='/interesting-facts/'>
@@ -438,9 +452,6 @@ export async function getStaticProps() {
     }
   })
 
-  
-
-
 
 
   //GOAL: An array -- coupSuccessRateArray -- with two elements: one element holds the number of successful coups, and the other lemenet holds the number of failed coups
@@ -461,6 +472,8 @@ export async function getStaticProps() {
       coupSuccessRateArray[1].numberOfFailedCoups = coupSuccessRateArray[1].numberOfFailedCoups + 1;
     }
   });
+
+
 
   //GOAL: An array -- eachCountryNumberOfCoupArray -- that has each element holding a country and how many total coups occurred in that country.
   let countriesThatExperiencedCoupsWithDuplicatesArray = [];
@@ -488,25 +501,12 @@ export async function getStaticProps() {
     })
   })
 
-
-
-//I needed to get the current date, specifically only month and day, to be displayed in the paragraph under the heading of "Coups in 2022"
-let currentDate = new Date();
-
-const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
-let month = monthNames[currentDate.getMonth()];
-let day = currentDate.getDate();
-
-let date = month + " " + day;
   return {
     props: {
       coupYearFrequencyArray: coupYearFrequencyArray,
       coupIncidentsArray: coupIncidentsArray,
       coupSuccessRateArray: coupSuccessRateArray,
       eachCountryNumberOfCoupArray: eachCountryNumberOfCoupArray,
-      date: date,
     },
     revalidate: 1,
   }
