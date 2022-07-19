@@ -36,3 +36,22 @@
 .nav-bar__link--margin-right {
   margin-right: 1rem;
 }
+
+@media screen and (min-width: 1000px) {
+  .nav-bar {
+    width: auto;
+    padding: 2rem 2rem 3.5rem 2rem;
+  }
+
+  .nav-bar__website-title {
+    font-size: 35px;
+  }
+
+  .nav-bar__link {
+    font-size: 20px;
+  }
+
+  .nav-bar__link--margin-right {
+    margin-right: 3rem;
+  }
+}
