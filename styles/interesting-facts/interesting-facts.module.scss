@@ -1,7 +1,7 @@
 .interestingFactContainer {
   width: 100%;
 
-  .interestinFact__title {
+  .interestingFact__title {
     width: auto;
     padding: 4rem 1rem 3rem 1rem;
 
@@ -12,11 +12,13 @@
 
   .interestingFact__question {
     width: auto;
-    padding: 4rem 1rem 3rem 1rem;
+    padding: 4rem 1rem 2rem 1rem;
 
     font-weight: 200;
     color: white;
     background-color: rgb(33, 116, 131);
+
+    height: 50px;
   }
 
   .interestingFact__answer {
@@ -60,7 +62,49 @@
   .interestingFact__button:hover {
     color: rgb(54, 191, 215);
   }
-
 }
 
-//rgb(33, 116, 131);
+@media screen and (min-width: 1000px) {
+  .interestingFactContainer { 
+
+    .interestingFact__title {
+      font-size: 28px;
+    }
+
+    .interestingFact__question {
+      font-size: 22px;
+    }
+
+    .interestingFact__answer {
+      font-size: 20px;
+    }
+
+    .interestingFact__button {
+      font-size: 16px;
+      padding: 0.8rem 1.5rem 0.8rem 1.5rem;
+    }
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .interestingFactContainer { 
+
+    .interestingFact__title {
+      font-size: 35px;
+    }
+
+    .interestingFact__question {
+      font-size: 28px;
+    }
+
+    .interestingFact__answer {
+      font-size: 23px;
+      line-height: 3rem;
+    }
+
+    .interestingFact__button {
+      font-size: 16px;
+      padding: 0.8rem 1.5rem 0.8rem 1.5rem;
+    }
+  }
+}

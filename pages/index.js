@@ -341,7 +341,11 @@ export default function Home({coupYearFrequencyArray, coupIncidentsArray, coupSu
 
         <section className={styles.learnMoreContainer}>
           <h2 className={styles.header}>Want to Learn More About Coups?</h2>
-          <button className={styles.learnMore__button}>Click Here</button>
+          <Link href='/interesting-facts/'>
+          <button className={styles.learnMore__button}>
+              <a>Click Here</a>
+            </button>
+          </Link>
         </section>
       </main>
     </div>

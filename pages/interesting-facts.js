@@ -13,7 +13,7 @@ const InterestingFacts = ({mixedData}) => {
   return (
     <>
       <div className={styles.interestingFactContainer}>
-        <h2 className={styles.interestinFact__title}>Here are some interesting coup facts:</h2>
+        <h2 className={styles.interestingFact__title}>Here are some interesting coup facts:</h2>
         <h3 className={styles.interestingFact__question}>{mixedData[qAndANumber].question}</h3>
         {isReadAnswerClicked ? <h3 className={styles.interestingFact__answer}>{mixedData[qAndANumber].answer}</h3> : <div className={styles.interestingFact__hideAnswerContainer}></div>}
 

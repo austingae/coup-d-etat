@@ -6,7 +6,11 @@ function MyApp({ Component, pageProps }) {
       <>
         <nav className='nav-bar'>
           <div className='nav-bar__left-section'>
-            <h1 className='nav-bar__website-title'>coup d&apos;état</h1>
+          <Link href='/'>
+            <h1 className='nav-bar__website-title'>
+                <a>coup d&apos;état</a>
+            </h1>
+            </Link>
           </div>
           <div className='nav-bar__right-section'>
             <Link href='/'>
