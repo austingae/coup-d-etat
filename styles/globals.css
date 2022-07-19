@@ -21,6 +21,8 @@
 
 .nav-bar__website-title {
   color: rgb(33, 116, 131);
+
+  cursor: pointer;
 }
 
 .nav-bar__right-section {

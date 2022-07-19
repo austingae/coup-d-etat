@@ -109,7 +109,46 @@
   border-style: solid;
   border-color: white;
   border-radius: 1rem;
+  cursor: pointer;
 }
 .learnMoreContainer .learnMore__button:hover {
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+@media screen and (min-width: 1000px) {
+  .header {
+    font-size: 25px;
+  }
+  .coupInfoContainer .coupIncident__title {
+    font-size: 25px;
+    margin-bottom: 1rem;
+  }
+  .coupInfoContainer .coupIncident__description {
+    font-size: 18px;
+  }
+  .militaryCoupContainer .militaryCoup__definition {
+    font-size: 16px;
+  }
+  .learnMoreContainer .learnMore__button {
+    margin-top: 2rem;
+    font-size: 18px;
+    padding: 0.8rem 1.8rem 0.8rem 1.8rem;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .header {
+    font-size: 28px;
+  }
+  .largeHeader {
+    font-size: 25px;
+  }
+  .militaryCoupContainer .militaryCoup__definition {
+    font-size: 18px;
+    line-height: 1.8rem;
+  }
+  .learnMoreContainer .learnMore__button {
+    margin-top: 3rem;
+    font-size: 20px;
+    padding: 1rem 2rem 1rem 2rem;
+  }
 }/*# sourceMappingURL=home.module.css.map */
